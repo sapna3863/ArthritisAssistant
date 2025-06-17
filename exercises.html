@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rehab Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="camera.html">Camera</a></li>
+            <li><a href="exercises.html" class="active">Exercises</a></li>
+        </ul>
+    </nav>
+
+    <div class="exercise-library">
+        <h1>Exercise Library</h1>
+        <p class="section-description">Choose from our collection of exercises made to help your body.</p>
+
+        <div class="exercise-categories">
+            <div class="category-card">
+                <h2>Lower Body Exercises</h2>
+                <ul class="exercise-list">
+                    <li>
+                        <image src="images/squat.png" alt="Squats" class="exercise-image">
+                        <h3>Squats</h3>
+                        <p>Strengthens legs and improves balance</p>
+                        <a href="camera.html" class="exercise-btn">Start Exercise</a>
+                    </li>
+                    <li>
+                      <image src="images/lunge.svg" alt="Lunges" class="exercise-image">
+                        <h3>Leg Raises</h3>
+                        <p>Builds hip flexor strength</p>
+                        <a href="camera.html" class="exercise-btn">Start Exercise</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="category-card">
+                <h2>Upper Body Exercises</h2>
+                <ul class="exercise-list">
+                    <li>
+                      <image src="images/shoulder_press.jpg" alt="Shoulder Press" class="exercise-image">
+                        <h3>Shoulder Press</h3>
+                        <p>Improves shoulder mobility and strength</p>
+                        <a href="camera.html" class="exercise-btn">Start Exercise</a>
+                    </li>
+                    <li>
+                      <image src="images/wall_pushups.jpg" alt="Wall Push-ups" class="exercise-image">
+                        <h3>Wall Push-ups</h3>
+                        <p>Builds upper body strength safely</p>
+                        <a href="camera.html" class="exercise-btn">Start Exercise</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="category-card">
+                <h2>Balance & Core</h2>
+                <ul class="exercise-list">
+                    <li>
+                      <image src="images/standing_balance.jpg" alt="Standing Balance" class="exercise-image">
+                        <h3>Standing Balance</h3>
+                        <p>Improves stability and coordination</p>
+                        <a href="camera.html" class="exercise-btn">Start Exercise</a>
+                    </li>
+                    <li>
+                      <image src="images/bridge.jpg" alt="Bridge" class="exercise-image">
+                        <h3>Bridge Exercise</h3>
+                        <p>Strengthens core and lower back</p>
+                        <a href="camera.html" class="exercise-btn">Start Exercise</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Rehab Buddy. All rights reserved.</p>
+    </footer>
+</body>
+</html>
