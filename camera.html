@@ -28,8 +28,8 @@
       <li><a href="exercises.html">Exercises</a></li>
     </ul>
     </nav>
-  <h1>Camera</h1>
-  <p>Strike a pose!</p>
+  <h1>Camera</h1>                    
+  <p>Start exercising!</p>
   <div id="webcam-container"></div>
   <div id="label-container"></div>
 
@@ -52,14 +52,14 @@
       await webcam.setup();
       await webcam.play();
       window.requestAnimationFrame(loop);
-
+                                    
       // Attach webcam to DOM
       document.getElementById("webcam-container").appendChild(webcam.canvas);
       labelContainer = document.getElementById("label-container");
       for (let i = 0; i < maxPredictions; i++) {
         labelContainer.appendChild(document.createElement("div"));
       }
-    }
+    }                                 
 
     async function loop(timestamp) {
       webcam.update();
@@ -88,6 +88,26 @@
     }
 
     init();
+  </script>
+  <div class="exercise-buttons">
+    <button class="exercise-btn" onclick="selectExercise('Squats')">Squats</button>
+    <button class="exercise-btn" onclick="selectExercise('Leg Raises')">Leg Raises</button>
+    <button class="exercise-btn" onclick="selectExercise('Shoulder Press')">Shoulder Press</button>
+    <button class="exercise-btn" onclick="selectExercise('Wall Push-ups')">Wall Push-ups</button>
+    <button class="exercise-btn" onclick="selectExercise('Standing Balance')">Standing Balance</button>
+    <button class="exercise-btn" onclick="selectExercise('Bridge Exercise')">Bridge Exercise</button>
+</div>
+  <script>
+    function selectExercise(exercise) {
+    // Store selected exercise
+    alert('You selected: ' + exercise);
+    localStorage.setItem('selectedExercise', exercise);
+    
+    // Update UI to show selected exercise
+    console.log('Selected exercise:', exercise);
+    
+    // You can add more functionality here to load specific exercise content
+}
   </script>
 </body>
 <p>&copy; 2025 Rehab Buddy. All rights reserved.</p>
