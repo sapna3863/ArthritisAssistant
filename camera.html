@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Rehab Assistant</title>
-   <link rel="stylesheet" href="styles.css">
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose"></script>
+  <link rel="stylesheet" href="styles.css" />
   <style>
     body {
       font-family: sans-serif;
       text-align: center;
       background-color: #f0f0f0;
-    }                
-    #webcam-container, #label-container { 
+    }
+    #webcam-container, #label-container {
       margin-top: 20px;
-    }      
+    }
     video {
       border-radius: 8px;
     }
-  </style>       
+  </style>
+  <!-- Only one TFJS version -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
 </head>
 <body>
   <nav class="navbar">
@@ -27,39 +28,47 @@
       <li><a href="camera.html">Camera</a></li>
       <li><a href="exercises.html">Exercises</a></li>
     </ul>
-    </nav>
-  <h1>Camera</h1>                    
-  <p>Start exercising!</p>
-  <div id="webcam-container"></div>
-  <div id="label-container"></div>
+  </nav>
 
-  <script type="text/javascript">
-    const URL = "PASTE_YOUR_MODEL_URL_HERE"; // Replace with your Teachable Machine pose model URL
+  <div id="webcam-container">
+    <h1>Camera</h1>
+    <h2>Start exercising using pose recognition!</h2>
 
+    <button onclick="init()">Start Pose Detection</button>
+    <br /><br />
+    <canvas id="canvas" aria-label="Webcam video and pose overlay"></canvas>
+    <div id="label-container" aria-live="polite"></div>
+  </div>
+
+  <script>
+    const URL = "https://teachablemachine.withgoogle.com/models/k4i2TNGru/";
     let model, webcam, ctx, labelContainer, maxPredictions;
 
     async function init() {
       const modelURL = URL + "model.json";
       const metadataURL = URL + "metadata.json";
 
-      // Load the model and metadata
       model = await tmPose.load(modelURL, metadataURL);
       maxPredictions = model.getTotalClasses();
 
-      // Setup webcam
       const size = 400;
-      webcam = new tmPose.Webcam(size, size, true);
+      const flip = true;
+      webcam = new tmPose.Webcam(size, size, flip);
       await webcam.setup();
       await webcam.play();
       window.requestAnimationFrame(loop);
-                                    
-      // Attach webcam to DOM
-      document.getElementById("webcam-container").appendChild(webcam.canvas);
+
+      const canvas = document.getElementById("canvas");
+      canvas.width = size;
+      canvas.height = size;
+      ctx = canvas.getContext("2d");
+
       labelContainer = document.getElementById("label-container");
+      labelContainer.innerHTML = '';
       for (let i = 0; i < maxPredictions; i++) {
         labelContainer.appendChild(document.createElement("div"));
       }
-    }                                 
+    }
 
     async function loop(timestamp) {
       webcam.update();
@@ -70,45 +79,30 @@
     async function predict() {
       const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
       const prediction = await model.predict(posenetOutput);
-      for (let i = 0; i < maxPredictions; i++) {
-        const classPrediction =
-          prediction[i].className + ": " + (prediction[i].probability * 100).toFixed(1) + "%";
-        labelContainer.childNodes[i].innerHTML = classPrediction;
 
-        if (prediction[i].probability > 0.85) {
-          if (prediction[i].className === "Correct Squat") {
-            labelContainer.childNodes[i].style.color = "green";
-            labelContainer.childNodes[i].innerHTML = "✅ Great form!";
-          } else if (prediction[i].className === "Incorrect Squat") {
-            labelContainer.childNodes[i].style.color = "red";
-            labelContainer.childNodes[i].innerHTML = "⚠️ Try to straighten your back!";
-          }
+      for (let i = 0; i < maxPredictions; i++) {
+        const classPrediction = prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+        labelContainer.childNodes[i].innerHTML = classPrediction;
+      }
+
+      drawPose(pose);
+    }
+
+    function drawPose(pose) {
+      if (webcam.canvas) {
+        ctx.drawImage(webcam.canvas, 0, 0);
+        if (pose) {
+          const minPartConfidence = 0.5;
+          tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx);
+          tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
         }
       }
     }
-
-    init();
-  </script>
-  <div class="exercise-buttons">
-    <button class="exercise-btn" onclick="selectExercise('Squats')">Squats</button>
-    <button class="exercise-btn" onclick="selectExercise('Leg Raises')">Leg Raises</button>
-    <button class="exercise-btn" onclick="selectExercise('Shoulder Press')">Shoulder Press</button>
-    <button class="exercise-btn" onclick="selectExercise('Wall Push-ups')">Wall Push-ups</button>
-    <button class="exercise-btn" onclick="selectExercise('Standing Balance')">Standing Balance</button>
-    <button class="exercise-btn" onclick="selectExercise('Bridge Exercise')">Bridge Exercise</button>
-</div>
-  <script>
-    function selectExercise(exercise) {
-    // Store selected exercise
-    alert('You selected: ' + exercise);
-    localStorage.setItem('selectedExercise', exercise);
-    
-    // Update UI to show selected exercise
-    console.log('Selected exercise:', exercise);
-    
-    // You can add more functionality here to load specific exercise content
-}
   </script>
 </body>
-<p>&copy; 2025 Rehab Buddy. All rights reserved.</p>
+
+<footer>
+    <p> 2025 Rehab Buddy. All rights reserved.</p>
+</footer>
+
 </html>

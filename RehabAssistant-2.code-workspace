@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../RehabAssistant/images"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "RehabAssistant-2"
+	}
+}
