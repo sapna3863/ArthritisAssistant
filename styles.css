@@ -475,10 +475,20 @@ label-container div:hover {
     transition: background-color 0.3s;
 }
 
-.exercise-btn:hover {
-    background-color: #2980b9;
-}
+ .exercise-btn.active {
+        background-color: #357a38;
+        box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    }
 
-.exercise-btn:active {
-    transform: scale(0.98);
-}
+    #startBtn:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
+    .instructions {
+        margin: 20px 0;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-radius: 5px;
+        font-weight: bold;
+    }
