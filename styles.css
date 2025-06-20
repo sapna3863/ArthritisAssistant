@@ -476,7 +476,7 @@ label-container div:hover {
 }
 
  .exercise-btn.active {
-        background-color: #357a38;
+    background-color: #0056b3;
         box-shadow: 0 0 5px rgba(0,0,0,0.3);
     }
 
@@ -492,3 +492,47 @@ label-container div:hover {
         border-radius: 5px;
         font-weight: bold;
     }
+
+    
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background-color: #f0f0f0;
+    }
+    #webcam-container, #label-container {
+      margin-top: 20px;
+    }
+    video {
+      border-radius: 8px;
+    }
+    .exercise-buttons {
+      margin: 20px 0;
+    }
+    #startBtn {
+    padding: 12px 24px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    margin: 20px 0;
+}
+
+#startBtn:not(:disabled) {
+    opacity: 1;
+    box-shadow: 0 2px 5px rgba(0, 123, 255, 0.3);
+}
+
+#startBtn:not(:disabled):hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);
+}
+
+#startBtn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    background-color: #007bff;
+}
