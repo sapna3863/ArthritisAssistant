@@ -57,12 +57,59 @@
         return;
       }
 
-      // Update instruction text
       const instructions = {
-        squat: "Stand with feet shoulder-width apart and lower your body as if sitting back into a chair",
-        wallPushup: "Coming soon!",
-        balance: "Coming soon!"
-      };
+    squat: `
+        <div class="instructions-detailed">
+            <h3>Proper Squat Form</h3>
+            <div class="instruction-step">
+                <img src="images/squat-start.png" alt="Starting position">
+                <div class="step-content">
+                    <h4>Step 1: Starting Position</h4>
+                    <ul>
+                        <li>Stand with feet shoulder-width apart</li>
+                        <li>Toes slightly pointed outward</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="instruction-step">
+                <img src="images/squat-descent.png" alt="Squat descent">
+                <div class="step-content">
+                    <h4>Step 2: The Descent</h4>
+                    <ul>
+                        <li>Hinge at the hips and push your buttocks back</li>
+                        <li>Lower as if sitting back in a chair</li>
+                        <li>Keep your chest up and back straight</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="instruction-step">
+                <img src="images/squat-bottom.png" alt="Bottom position">
+                <div class="step-content">
+                    <h4>Step 3: Bottom Position</h4>
+                    <ul>
+                        <li>Lower until your thighs are parallel to the ground</li>
+                        <li>Ensure your knees are aligned with your toes</li>
+                        <li>Maintain a neutral spine</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="instruction-step">
+                <img src="images/squat-rise.png" alt="Rising position">
+                <div class="step-content">
+                    <h4>Step 4: The Rise</h4>
+                    <ul>
+                        <li>Push through your heels</li>
+                        <li>Inhale as you lower, exhale as you push</li>
+                        <li>Return to starting position</li>
+                        <li>Instructions provided by <a href="https://health.clevelandclinic.org/proper-squat-form" target="_blank">Cleveland Health Clinic</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    `,
+    wallPushup: "Coming soon!",
+    balance: "Coming soon!"
+};
 
       labelContainer = document.getElementById("label-container");
       labelContainer.innerHTML = `<div class="instructions">${instructions[exercise]}</div>`;
