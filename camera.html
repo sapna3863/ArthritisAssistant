@@ -23,7 +23,7 @@
     <div class="exercise-buttons">
       <button onclick="selectExercise('squat')" class="exercise-btn">Squat</button>
       <button onclick="selectExercise('wallPushup')" class="exercise-btn">Wall Pushup</button>
-      <button onclick="selectExercise('balance')" class="exercise-btn">Standing Balance</button>
+      <button onclick="selectExercise('plank')" class="exercise-btn">Plank</button>
     </div>
 
     <button onclick="init()" id="startBtn" disabled>Start Pose Detection</button>
@@ -51,7 +51,7 @@ function selectExercise(exercise) {
     labelContainer = document.getElementById("label-container");
 
     // Handle exercise selection
-    if (exercise === 'squat' || exercise === 'wallPushup') {
+    if (exercise === 'squat' || exercise === 'wallPushup' || exercise === 'plank') {
         startBtn.disabled = false;
         
         // Clear previous content and show instructions
@@ -154,7 +154,26 @@ function selectExercise(exercise) {
             </div>
     </div>
 `,
-    balance: "Coming soon!"
+    plank: `
+    <div class="instructions-detailed">
+            <h3>Proper Plank Form</h3>
+            <div class="instruction-step">
+                <img src="Plank/plank.jpeg" alt="Starting position">
+                <div class="step-content">
+                    <h4>Step 1: Starting Position</h4>
+                    <ul>
+                        <li>Place elbows directly underneath your shoulders.</li>
+                        <li>Engage glutes, core, and lightly tilt your pelvis forward.</li>
+                        <li>Keep your body in a straight line from head to heels.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="instruction-credits">
+                Images: Google Images • 
+                Instructions: <a href="https://health.clevelandclinic.org/plank-exercise-benefits" target="_blank">Cleveland Health Clinic</a>
+            </div>
+    </div>
+`
 };
 
     async function init() {
