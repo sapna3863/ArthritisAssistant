@@ -37,32 +37,37 @@
     let model, webcam, ctx, labelContainer, maxPredictions;
     let selectedExercise = '';
 
-    function selectExercise(exercise) {
-      selectedExercise = exercise;
-      
-      // Update button styles
-      document.querySelectorAll('.exercise-btn').forEach(btn => {
+function selectExercise(exercise) {
+    selectedExercise = exercise;
+    
+    // Update button styles
+    document.querySelectorAll('.exercise-btn').forEach(btn => {
         btn.classList.remove('active');
-      });
-      event.target.classList.add('active');
+    });
+    event.target.classList.add('active');
 
-      // Only enable start button for squat
-      const startBtn = document.getElementById('startBtn');
-      if (exercise === 'squat') {
+    // Get elements
+    const startBtn = document.getElementById('startBtn');
+    labelContainer = document.getElementById("label-container");
+
+    // Handle exercise selection
+    if (exercise === 'squat' || exercise === 'wallPushup') {
         startBtn.disabled = false;
-      } else {
+        
+        // Clear previous content and show instructions
+        labelContainer.innerHTML = instructions[exercise];
+    } else {
         startBtn.disabled = true;
-        labelContainer = document.getElementById("label-container");
         labelContainer.innerHTML = '<div class="instructions">Coming soon!</div>';
-        return;
-      }
+    }
+}
 
       const instructions = {
     squat: `
         <div class="instructions-detailed">
             <h3>Proper Squat Form</h3>
             <div class="instruction-step">
-                <img src="images/squat-start.png" alt="Starting position">
+                <img src="Squat/up.jpeg" alt="Starting position">
                 <div class="step-content">
                     <h4>Step 1: Starting Position</h4>
                     <ul>
@@ -72,7 +77,6 @@
                 </div>
             </div>
             <div class="instruction-step">
-                <img src="images/squat-descent.png" alt="Squat descent">
                 <div class="step-content">
                     <h4>Step 2: The Descent</h4>
                     <ul>
@@ -83,7 +87,7 @@
                 </div>
             </div>
             <div class="instruction-step">
-                <img src="images/squat-bottom.png" alt="Bottom position">
+                <img src="Squat/down.jpeg" alt="Bottom position">
                 <div class="step-content">
                     <h4>Step 3: Bottom Position</h4>
                     <ul>
@@ -94,26 +98,64 @@
                 </div>
             </div>
             <div class="instruction-step">
-                <img src="images/squat-rise.png" alt="Rising position">
                 <div class="step-content">
                     <h4>Step 4: The Rise</h4>
                     <ul>
                         <li>Push through your heels</li>
                         <li>Inhale as you lower, exhale as you push</li>
                         <li>Return to starting position</li>
-                        <li>Instructions provided by <a href="https://health.clevelandclinic.org/proper-squat-form" target="_blank">Cleveland Health Clinic</a></li>
                     </ul>
+            <div class="instruction-credits">
+                Images: Google Images • 
+                Instructions: <a href="https://health.clevelandclinic.org/proper-squat-form" target="_blank">Cleveland Health Clinic</a>
+                </div>
                 </div>
             </div>
         </div>
     `,
-    wallPushup: "Coming soon!",
+   wallPushup: `
+    <div class="instructions-detailed">
+            <h3>Proper Wall Pushup Form</h3>
+            <div class="instruction-step">
+                <img src="Pushup/up.jpeg" alt="Starting position">
+                <div class="step-content">
+                    <h4>Step 1: Starting Position</h4>
+                    <ul>
+                        <li>Stand with feet shoulder-width apart</li>
+                        <li>Lean against the wall hands in front of you</li>
+                        <li>Place hands directly below your shoulders and shoulder-width apart</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="instruction-step">
+                <div class="step-content">
+                    <h4>Step 2: The Descent</h4>
+                    <ul>
+                        <li>Bend your elbows to slowly lower your body to your chest</li>
+                        <li>Keep your elbows close to your sides</li>
+                        <li>Keep your head and abdomen in line with your spine</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="instruction-step">
+                <img src="Pushup/down.jpeg" alt="The Return">
+                <div class="step-content">
+                    <h4>Step 3: The Return</h4>
+                    <ul>
+                        <li>Push your body back up</li>
+                        <li>Keep tension in your core and glutes</li>
+                        <li>Do not let hips or back dip towards the ground</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="instruction-credits">
+                Images: Google Images • 
+                Instructions: <a href="https://health.clevelandclinic.org/how-to-do-a-push-up" target="_blank">Cleveland Health Clinic</a>
+            </div>
+    </div>
+`,
     balance: "Coming soon!"
 };
-
-      labelContainer = document.getElementById("label-container");
-      labelContainer.innerHTML = `<div class="instructions">${instructions[exercise]}</div>`;
-    }
 
     async function init() {
       if (selectedExercise !== 'squat') {

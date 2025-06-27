@@ -559,7 +559,7 @@ label-container div:hover {
 
 .instructions-detailed li {
     color: black;
-    font-size: 18px;
+    font-size: 15px;
     margin-bottom: 15px;
     padding-left: 0;  /* Remove any left padding */
 }
@@ -599,4 +599,90 @@ label-container div:hover {
         width: 95%;
         margin: 20px auto;
     }
+}
+
+.instruction-step:not(:has(img)) {
+    grid-template-columns: 1fr;
+    text-align: center;
+    background: transparent;
+}
+
+.step-content {
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    background: transparent;
+}
+
+.instruction-step {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    align-items: center;
+}
+
+.instruction-step:not(:has(img)) {
+    grid-template-columns: 1fr;
+    text-align: center;
+    background: transparent;
+}
+
+.step-content {
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    background: transparent;
+}
+
+.instruction-step img {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background: white;
+    margin: 0 auto;
+    display: block;
+    object-fit: cover;
+}
+
+/* Media query for mobile responsiveness */
+@media (max-width: 768px) {
+    .instruction-step {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .instruction-step img {
+        margin-bottom: 15px;
+    }
+}
+
+/* Media query for mobile responsiveness */
+@media (max-width: 768px) {
+    .instruction-step {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .instruction-step img {
+        margin-bottom: 15px;
+    }
+}
+.instruction-credits {
+    font-size: 15px !important; /* Force smaller size */
+    color: #666;
+    text-align: center;
+    padding-top: 10px;
+    margin-top: 15px;
+    line-height: 1.2;
+}
+
+.instruction-credits a {
+    color: #3498db;
+    text-decoration: none;
+    font-size: 15px !important; /* Match parent size */
 }
