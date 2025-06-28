@@ -1,268 +1,284 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Rehab Assistant</title>
-  <link rel="stylesheet" href="styles.css" />
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
+    <meta charset="UTF-8" />
+    <title>Rehab Assistant</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
 </head>
 <body>
-  <nav class="navbar">
-    <ul>
-      <li><a href="home.html">Home</a></li>
-      <li><a href="camera.html" class="active">Camera</a></li>
-      <li><a href="exercises.html">Exercises</a></li>
-    </ul>
-  </nav>
+    <nav class="navbar">
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="camera.html" class="active">Camera</a></li>
+            <li><a href="exercises.html">Exercises</a></li>
+        </ul>
+    </nav>
 
-  <div id="webcam-container">
-    <h1>Camera</h1>
-    <h2>Start exercising using pose recognition!</h2>
+    <div class="webcam-container">
+        <div class="camera-section">
+            <h1>Camera</h1>
+            <h2>Start exercising using pose recognition!</h2>
 
-    <div class="exercise-buttons">
-      <button onclick="selectExercise('squat')" class="exercise-btn">Squat</button>
-      <button onclick="selectExercise('wallPushup')" class="exercise-btn">Wall Pushup</button>
-      <button onclick="selectExercise('plank')" class="exercise-btn">Plank</button>
+            <div class="exercise-buttons">
+                <button onclick="selectExercise('squat')" class="exercise-btn">Squat</button>
+                <button onclick="selectExercise('wallPushup')" class="exercise-btn">Wall Pushup</button>
+                <button onclick="selectExercise('plank')" class="exercise-btn">Plank</button>
+            </div>
+
+            <button onclick="init()" id="startBtn" disabled>Start Pose Detection</button>
+            <canvas id="canvas" aria-label="Webcam video and pose overlay"></canvas>
+        </div>
+
+        <div class="instructions-section">
+            <div id="label-container" aria-live="polite"></div>
+        </div>
     </div>
 
-    <button onclick="init()" id="startBtn" disabled>Start Pose Detection</button>
-    <br /><br />
-    <canvas id="canvas" aria-label="Webcam video and pose overlay"></canvas>
-    <div id="label-container" aria-live="polite"></div>
-  </div>
+    <script>
+        // Model definitions
+        const MODELS = {
+            squat: {
+                url: "https://teachablemachine.withgoogle.com/models/T-gobA29l/",
+                modelFile: "model.json",
+                metadataFile: "metadata.json"
+            },
+            wallPushup: {
+                url: "https://teachablemachine.withgoogle.com/models/YOUR_WALLPUSHUP_MODEL/",
+                modelFile: "model.json",
+                metadataFile: "metadata.json"
+            },
+            plank: {
+                url: "https://teachablemachine.withgoogle.com/models/YOUR_PLANK_MODEL/",
+                modelFile: "model.json",
+                metadataFile: "metadata.json"
+            }
+        };
 
-  <script>
-    const URL = "https://teachablemachine.withgoogle.com/models/k4i2TNGru/";
-    let model, webcam, ctx, labelContainer, maxPredictions;
-    let selectedExercise = '';
+        // Global variables
+        let model, webcam, ctx, labelContainer, maxPredictions;
+        let selectedExercise = '';
 
-function selectExercise(exercise) {
-    selectedExercise = exercise;
-    
-    // Update button styles
-    document.querySelectorAll('.exercise-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    event.target.classList.add('active');
-
-    // Get elements
-    const startBtn = document.getElementById('startBtn');
-    labelContainer = document.getElementById("label-container");
-
-    // Handle exercise selection
-    if (exercise === 'squat' || exercise === 'wallPushup' || exercise === 'plank') {
-        startBtn.disabled = false;
-        
-        // Clear previous content and show instructions
-        labelContainer.innerHTML = instructions[exercise];
-    } else {
-        startBtn.disabled = true;
-        labelContainer.innerHTML = '<div class="instructions">Coming soon!</div>';
-    }
-}
-
-      const instructions = {
+        // Add this instructions object after your MODELS definition
+const INSTRUCTIONS = {
     squat: `
         <div class="instructions-detailed">
-            <h3>Proper Squat Form</h3>
+            <h3>Squat Form</h3>
             <div class="instruction-step">
                 <img src="Squat/up.jpeg" alt="Starting position">
                 <div class="step-content">
                     <h4>Step 1: Starting Position</h4>
                     <ul>
                         <li>Stand with feet shoulder-width apart</li>
-                        <li>Toes slightly pointed outward</li>
+                        <li>Keep chest up and core engaged</li>
+                        <li>Arms straight in front or at sides</li>
                     </ul>
                 </div>
             </div>
             <div class="instruction-step">
+                <img src="Squat/down.jpeg" alt="Squat position">
                 <div class="step-content">
-                    <h4>Step 2: The Descent</h4>
+                    <h4>Step 2: The Squat</h4>
                     <ul>
-                        <li>Hinge at the hips and push your buttocks back</li>
-                        <li>Lower as if sitting back in a chair</li>
-                        <li>Keep your chest up and back straight</li>
+                        <li>Lower your body as if sitting back into a chair</li>
+                        <li>Keep knees aligned with toes</li>
+                        <li>Lower until thighs are parallel to ground</li>
                     </ul>
-                </div>
-            </div>
-            <div class="instruction-step">
-                <img src="Squat/down.jpeg" alt="Bottom position">
-                <div class="step-content">
-                    <h4>Step 3: Bottom Position</h4>
-                    <ul>
-                        <li>Lower until your thighs are parallel to the ground</li>
-                        <li>Ensure your knees are aligned with your toes</li>
-                        <li>Maintain a neutral spine</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="instruction-step">
-                <div class="step-content">
-                    <h4>Step 4: The Rise</h4>
-                    <ul>
-                        <li>Push through your heels</li>
-                        <li>Inhale as you lower, exhale as you push</li>
-                        <li>Return to starting position</li>
-                    </ul>
-            <div class="instruction-credits">
-                Images: Google Images • 
-                Instructions: <a href="https://health.clevelandclinic.org/proper-squat-form" target="_blank">Cleveland Health Clinic</a>
-                </div>
                 </div>
             </div>
         </div>
     `,
-   wallPushup: `
-    <div class="instructions-detailed">
-            <h3>Proper Wall Pushup Form</h3>
+    wallPushup: `
+        <div class="instructions-detailed">
+            <h3>Wall Pushup Form</h3>
             <div class="instruction-step">
                 <img src="Pushup/up.jpeg" alt="Starting position">
                 <div class="step-content">
-                    <h4>Step 1: Starting Position</h4>
+                    <h4>Step 1: Setup</h4>
                     <ul>
-                        <li>Stand with feet shoulder-width apart</li>
-                        <li>Lean against the wall hands in front of you</li>
-                        <li>Place hands directly below your shoulders and shoulder-width apart</li>
+                        <li>Stand arm's length from wall</li>
+                        <li>Place hands shoulder-width apart</li>
+                        <li>Keep body straight</li>
                     </ul>
                 </div>
             </div>
             <div class="instruction-step">
+                <img src="Pushup/down.jpeg" alt="Push position">
                 <div class="step-content">
-                    <h4>Step 2: The Descent</h4>
+                    <h4>Step 2: Movement</h4>
                     <ul>
-                        <li>Bend your elbows to slowly lower your body to your chest</li>
-                        <li>Keep your elbows close to your sides</li>
-                        <li>Keep your head and abdomen in line with your spine</li>
+                        <li>Bend elbows to lean toward wall</li>
+                        <li>Keep core engaged</li>
+                        <li>Push back to start</li>
                     </ul>
                 </div>
             </div>
-            <div class="instruction-step">
-                <img src="Pushup/down.jpeg" alt="The Return">
-                <div class="step-content">
-                    <h4>Step 3: The Return</h4>
-                    <ul>
-                        <li>Push your body back up</li>
-                        <li>Keep tension in your core and glutes</li>
-                        <li>Do not let hips or back dip towards the ground</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="instruction-credits">
-                Images: Google Images • 
-                Instructions: <a href="https://health.clevelandclinic.org/how-to-do-a-push-up" target="_blank">Cleveland Health Clinic</a>
-            </div>
-    </div>
-`,
+        </div>
+    `,
     plank: `
-    <div class="instructions-detailed">
-            <h3>Proper Plank Form</h3>
+        <div class="instructions-detailed">
+            <h3>Plank Form</h3>
             <div class="instruction-step">
-                <img src="Plank/plank.jpeg" alt="Starting position">
+                <img src="Plank/plank.jpeg" alt="Plank position">
                 <div class="step-content">
-                    <h4>Step 1: Starting Position</h4>
+                    <h4>Proper Form</h4>
                     <ul>
-                        <li>Place elbows directly underneath your shoulders.</li>
-                        <li>Engage glutes, core, and lightly tilt your pelvis forward.</li>
-                        <li>Keep your body in a straight line from head to heels.</li>
+                        <li>Forearms flat on ground</li>
+                        <li>Body in straight line</li>
+                        <li>Core and glutes engaged</li>
                     </ul>
                 </div>
             </div>
-            <div class="instruction-credits">
-                Images: Google Images • 
-                Instructions: <a href="https://health.clevelandclinic.org/plank-exercise-benefits" target="_blank">Cleveland Health Clinic</a>
-            </div>
-    </div>
-`
+        </div>
+    `
 };
 
+// Update the selectExercise function
+function selectExercise(exercise) {
+    selectedExercise = exercise;
+    
+    document.querySelectorAll('.exercise-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+
+    const startBtn = document.getElementById('startBtn');
+    labelContainer = document.getElementById("label-container");
+
+    if (MODELS[exercise]) {
+        startBtn.disabled = false;
+        // Show instructions immediately
+        labelContainer.innerHTML = `
+            ${INSTRUCTIONS[exercise]}
+            <div class="start-instruction">
+                <p>Click "Start Pose Detection" when ready to begin</p>
+            </div>
+        `;
+    } else {
+        startBtn.disabled = true;
+        labelContainer.innerHTML = '<div class="instructions">Coming soon!</div>';
+    }
+}
+
     async function init() {
-      if (selectedExercise !== 'squat') {
-        return;
-      }
-
-      const modelURL = URL + "model.json";
-      const metadataURL = URL + "metadata.json";
-
-      // Show loading state
-      labelContainer = document.getElementById("label-container");
-      labelContainer.innerHTML = '<div class="instructions">Loading squat model...</div>';
-
-      try {
-        model = await tmPose.load(modelURL, metadataURL);
-        maxPredictions = model.getTotalClasses();
-
-        const size = 400;
-        const flip = true;
-        webcam = new tmPose.Webcam(size, size, flip);
-        await webcam.setup();
-        await webcam.play();
-        window.requestAnimationFrame(loop);
-
-        const canvas = document.getElementById("canvas");
-        canvas.width = size;
-        canvas.height = size;
-        ctx = canvas.getContext("2d");
-
-        labelContainer.innerHTML = '';
-        for (let i = 0; i < maxPredictions; i++) {
-          labelContainer.appendChild(document.createElement("div"));
+        if (!selectedExercise || !MODELS[selectedExercise]) {
+            labelContainer.innerHTML = '<div class="instruction-alert">Please select a valid exercise!</div>';
+            return;
         }
-      } catch (error) {
-        console.error('Error loading model:', error);
-        labelContainer.innerHTML = '<div class="instructions">Error loading model. Please try again.</div>';
-      }
+
+        labelContainer = document.getElementById("label-container");
+
+        try {
+            // Request camera permission first
+            try {
+                await navigator.mediaDevices.getUserMedia({ video: true });
+            } catch (error) {
+                throw new Error('Camera access denied. Please allow camera access and try again.');
+            }
+
+            // Show loading state
+            labelContainer.innerHTML = `
+                ${INSTRUCTIONS[selectedExercise]}
+                <div class="loading-message">Loading ${selectedExercise} model...</div>
+            `;
+
+            // Clean up previous instances
+            if (model) model.dispose();
+            if (webcam) webcam.stop();
+
+            // Load model
+            const modelURL = MODELS[selectedExercise].url + MODELS[selectedExercise].modelFile;
+            const metadataURL = MODELS[selectedExercise].url + MODELS[selectedExercise].metadataFile;
+            
+            model = await tmPose.load(modelURL, metadataURL);
+            maxPredictions = model.getTotalClasses();
+
+            // Setup webcam
+            const size = 400;
+            const flip = true;
+            webcam = new tmPose.Webcam(size, size, flip);
+            await webcam.setup();
+            await webcam.play();
+
+            // Setup canvas
+            const canvas = document.getElementById("canvas");
+            canvas.width = size;
+            canvas.height = size;
+            ctx = canvas.getContext("2d");
+
+            // Create prediction container
+            const predictionsDiv = document.createElement('div');
+            predictionsDiv.className = 'predictions-container';
+            labelContainer.appendChild(predictionsDiv);
+
+            // Start animation loop
+            window.requestAnimationFrame(loop);
+
+        } catch (error) {
+            console.error('Error:', error);
+            labelContainer.innerHTML = `
+                ${INSTRUCTIONS[selectedExercise]}
+                <div class="instruction-alert">
+                    <p>❌ Error: ${error.message}</p>
+                    <p>Please make sure your camera is connected and you've granted camera permissions.</p>
+                </div>
+            `;
+        }
     }
 
-    async function loop(timestamp) {
-      webcam.update();
-      await predict();
-      window.requestAnimationFrame(loop);
+    async function loop() {
+        if (webcam && webcam.canvas) {
+            webcam.update();
+            await predict();
+            window.requestAnimationFrame(loop);
+        }
     }
 
     async function predict() {
-      const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
-      const prediction = await model.predict(posenetOutput);
+        if (!model || !webcam) return;
 
-      for (let i = 0; i < maxPredictions; i++) {
-        const classPrediction = prediction[i].className + ": " + prediction[i].probability.toFixed(2);
-        labelContainer.childNodes[i].innerHTML = classPrediction;
-      }
+        const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
+        const prediction = await model.predict(posenetOutput);
 
-      if (pose && selectedExercise === 'squat') {
-        checkSquatForm(pose);
-      }
+        // Update predictions display
+        const predictionsContainer = labelContainer.querySelector('.predictions-container');
+        if (predictionsContainer) {
+            predictionsContainer.innerHTML = ''; // Clear previous predictions
+            
+            for (let i = 0; i < maxPredictions; i++) {
+                const probability = prediction[i].probability;
+                const className = prediction[i].className;
+                const formClass = probability > 0.7 ? 'good-form' : 'bad-form';
+                
+                const predictionDiv = document.createElement('div');
+                predictionDiv.className = `prediction-item ${formClass}`;
+                predictionDiv.innerHTML = `
+                    ${className}: ${(probability * 100).toFixed(0)}%
+                    ${probability > 0.7 ? '✅' : '❌'}
+                `;
+                predictionsContainer.appendChild(predictionDiv);
+            }
+        }
 
-      drawPose(pose);
+        // Draw pose
+        drawPose(pose);
     }
 
     function drawPose(pose) {
-      if (webcam.canvas) {
-        ctx.drawImage(webcam.canvas, 0, 0);
-        if (pose) {
-          const minPartConfidence = 0.5;
-          tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx);
-          tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
+        if (webcam && webcam.canvas) {
+            ctx.drawImage(webcam.canvas, 0, 0);
+            if (pose) {
+                const minPartConfidence = 0.5;
+                tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx);
+                tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
+            }
         }
-      }
     }
+</script>
 
-    function checkSquatForm(pose) {
-      if (pose.keypoints) {
-        const hip = pose.keypoints.find(kp => kp.part === "leftHip");
-        const knee = pose.keypoints.find(kp => kp.part === "leftKnee");
-        if (hip && knee && hip.score > 0.5 && knee.score > 0.5) {
-          if (hip.position.y < knee.position.y) {
-            labelContainer.innerHTML += "<div class='instructions'>Keep going lower!</div>";
-          }
-        }
-      }
-    }
-  </script>
+    <footer>
+        <p>&copy; 2025 Rehab Buddy. All rights reserved.</p>
+    </footer>
 </body>
-
-<footer>
-  <p>&copy; 2025 Rehab Buddy. All rights reserved.</p>
-</footer>
-
 </html>
