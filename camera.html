@@ -60,80 +60,104 @@
         let model, webcam, ctx, labelContainer, maxPredictions;
         let selectedExercise = '';
 
-        // Add this instructions object after your MODELS definition
 const INSTRUCTIONS = {
     squat: `
         <div class="instructions-detailed">
-            <h3>Squat Form</h3>
+            <h3>Proper Squat Form</h3>
             <div class="instruction-step">
                 <img src="Squat/up.jpeg" alt="Starting position">
                 <div class="step-content">
                     <h4>Step 1: Starting Position</h4>
                     <ul>
-                        <li>Stand with feet shoulder-width apart</li>
-                        <li>Keep chest up and core engaged</li>
-                        <li>Arms straight in front or at sides</li>
+                        <li>Stand with feet slightly wider than hip-width apart</li>
+                        <li>Point toes slightly outward (about 5 to 10 degrees)</li>
+                        <li>Keep your spine neutral and chest up</li>
+                        <li>Engage your core muscles</li>
                     </ul>
                 </div>
             </div>
             <div class="instruction-step">
-                <img src="Squat/down.jpeg" alt="Squat position">
                 <div class="step-content">
-                    <h4>Step 2: The Squat</h4>
+                    <h4>Step 2: The Descent</h4>
                     <ul>
-                        <li>Lower your body as if sitting back into a chair</li>
-                        <li>Keep knees aligned with toes</li>
-                        <li>Lower until thighs are parallel to ground</li>
+                        <li>Begin by pushing your hips back as if sitting in a chair</li>
+                        <li>Keep weight in your heels</li>
+                        <li>Keep knees in line with toes (don't let them cave inward)</li>
+                        <li>Maintain a straight back - don't round your spine</li>
                     </ul>
                 </div>
+            </div>
+            <div class="instruction-step">
+                <img src="Squat/down.jpeg" alt="Bottom position">
+                <div class="step-content">
+                    <h4>Step 3: Bottom Position</h4>
+                    <ul>
+                        <li>Lower until thighs are parallel to ground</li>
+                        <li>Keep chest up and core engaged</li>
+                        <li>Ensure knees don't extend past toes</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="instruction-credits">
+                Instructions source: <a href="https://health.clevelandclinic.org/how-to-do-squats/" target="_blank">Cleveland Clinic</a> • 
+                Images: Google Images
             </div>
         </div>
     `,
     wallPushup: `
         <div class="instructions-detailed">
-            <h3>Wall Pushup Form</h3>
+            <h3>Wall Pushup Technique</h3>
             <div class="instruction-step">
                 <img src="Pushup/up.jpeg" alt="Starting position">
                 <div class="step-content">
-                    <h4>Step 1: Setup</h4>
+                    <h4>Step 1: Starting Position</h4>
                     <ul>
-                        <li>Stand arm's length from wall</li>
-                        <li>Place hands shoulder-width apart</li>
-                        <li>Keep body straight</li>
+                        <li>Stand arm's length from wall, feet shoulder-width apart</li>
+                        <li>Place palms flat on wall at shoulder height and width</li>
+                        <li>Keep body in straight line from head to heels</li>
                     </ul>
                 </div>
             </div>
             <div class="instruction-step">
-                <img src="Pushup/down.jpeg" alt="Push position">
+                <img src="Pushup/down.jpeg" alt="Bend position">
                 <div class="step-content">
-                    <h4>Step 2: Movement</h4>
+                    <h4>Step 2: The Movement</h4>
                     <ul>
-                        <li>Bend elbows to lean toward wall</li>
-                        <li>Keep core engaged</li>
-                        <li>Push back to start</li>
+                        <li>Slowly bend elbows, lowering chest toward wall</li>
+                        <li>Keep elbows close to body (don't let them wing out)</li>
+                        <li>Maintain straight body alignment - don't sag at hips</li>
                     </ul>
                 </div>
+            </div>
+            <div class="instruction-credits">
+                Instructions source: <a href="https://health.clevelandclinic.org/wall-pushups/" target="_blank">Cleveland Clinic</a> • 
+                Images: Google Images
             </div>
         </div>
     `,
     plank: `
         <div class="instructions-detailed">
-            <h3>Plank Form</h3>
+            <h3>Plank Position</h3>
             <div class="instruction-step">
                 <img src="Plank/plank.jpeg" alt="Plank position">
                 <div class="step-content">
                     <h4>Proper Form</h4>
                     <ul>
-                        <li>Forearms flat on ground</li>
-                        <li>Body in straight line</li>
-                        <li>Core and glutes engaged</li>
+                        <li>Place forearms on ground, elbows under shoulders</li>
+                        <li>Keep body in straight line from head to heels</li>
+                        <li>Engage core and squeeze glutes</li>
+                        <li>Keep neck neutral - look at floor</li>
+                        <li>Don't let hips sag or lift</li>
                     </ul>
                 </div>
+            </div>
+            <div class="instruction-credits">
+                Instructions source: <a href="https://health.clevelandclinic.org/proper-plank-form/" target="_blank">Cleveland Clinic</a> • 
+                Images: Google Images
             </div>
         </div>
     `
 };
-
 // Update the selectExercise function
 function selectExercise(exercise) {
     selectedExercise = exercise;
@@ -160,72 +184,71 @@ function selectExercise(exercise) {
         labelContainer.innerHTML = '<div class="instructions">Coming soon!</div>';
     }
 }
-
-    async function init() {
-        if (!selectedExercise || !MODELS[selectedExercise]) {
-            labelContainer.innerHTML = '<div class="instruction-alert">Please select a valid exercise!</div>';
-            return;
-        }
-
-        labelContainer = document.getElementById("label-container");
-
-        try {
-            // Request camera permission first
-            try {
-                await navigator.mediaDevices.getUserMedia({ video: true });
-            } catch (error) {
-                throw new Error('Camera access denied. Please allow camera access and try again.');
-            }
-
-            // Show loading state
-            labelContainer.innerHTML = `
-                ${INSTRUCTIONS[selectedExercise]}
-                <div class="loading-message">Loading ${selectedExercise} model...</div>
-            `;
-
-            // Clean up previous instances
-            if (model) model.dispose();
-            if (webcam) webcam.stop();
-
-            // Load model
-            const modelURL = MODELS[selectedExercise].url + MODELS[selectedExercise].modelFile;
-            const metadataURL = MODELS[selectedExercise].url + MODELS[selectedExercise].metadataFile;
-            
-            model = await tmPose.load(modelURL, metadataURL);
-            maxPredictions = model.getTotalClasses();
-
-            // Setup webcam
-            const size = 400;
-            const flip = true;
-            webcam = new tmPose.Webcam(size, size, flip);
-            await webcam.setup();
-            await webcam.play();
-
-            // Setup canvas
-            const canvas = document.getElementById("canvas");
-            canvas.width = size;
-            canvas.height = size;
-            ctx = canvas.getContext("2d");
-
-            // Create prediction container
-            const predictionsDiv = document.createElement('div');
-            predictionsDiv.className = 'predictions-container';
-            labelContainer.appendChild(predictionsDiv);
-
-            // Start animation loop
-            window.requestAnimationFrame(loop);
-
-        } catch (error) {
-            console.error('Error:', error);
-            labelContainer.innerHTML = `
-                ${INSTRUCTIONS[selectedExercise]}
-                <div class="instruction-alert">
-                    <p>❌ Error: ${error.message}</p>
-                    <p>Please make sure your camera is connected and you've granted camera permissions.</p>
-                </div>
-            `;
-        }
+async function init() {
+    if (!selectedExercise || !MODELS[selectedExercise]) {
+        labelContainer.innerHTML = '<div class="instruction-alert">Please select a valid exercise!</div>';
+        return;
     }
+
+    labelContainer = document.getElementById("label-container");
+
+    try {
+        // Request camera permission first
+        try {
+            await navigator.mediaDevices.getUserMedia({ video: true });
+        } catch (error) {
+            throw new Error('Camera access denied. Please allow camera access and try again.');
+        }
+
+        // Clean up previous instances
+        if (model) model.dispose();
+        if (webcam) webcam.stop();
+
+        // Load model
+        const modelURL = MODELS[selectedExercise].url + MODELS[selectedExercise].modelFile;
+        const metadataURL = MODELS[selectedExercise].url + MODELS[selectedExercise].metadataFile;
+        
+        model = await tmPose.load(modelURL, metadataURL);
+        maxPredictions = model.getTotalClasses();
+
+        // Setup webcam
+        const size = 400;
+        const flip = true;
+        webcam = new tmPose.Webcam(size, size, flip);
+        await webcam.setup();
+        await webcam.play();
+
+        // Setup canvas
+        const canvas = document.getElementById("canvas");
+        canvas.width = size;
+        canvas.height = size;
+        ctx = canvas.getContext("2d");
+
+        // Show reference image after camera loads
+        labelContainer.innerHTML = `
+            <div class="camera-active-container">
+                <div class="reference-image">
+                    <img src="${selectedExercise}/reference.png" alt="${selectedExercise} reference form" />
+                    <h3>Keep your knees just above the camera and hands resting above your chest.</h3>
+                </div>
+                <div class="predictions-container"></div>
+            </div>
+        `;
+
+        // Start animation loop
+        window.requestAnimationFrame(loop);
+
+    } catch (error) {
+        console.error('Error:', error);
+        labelContainer.innerHTML = `
+            ${INSTRUCTIONS[selectedExercise]}
+            <div class="instruction-alert">
+                <p>❌ Error: ${error.message}</p>
+                <p>Please make sure your camera is connected and you've granted camera permissions.</p>
+            </div>
+        `;
+    }
+}
 
     async function loop() {
         if (webcam && webcam.canvas) {
