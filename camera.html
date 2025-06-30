@@ -45,7 +45,7 @@
                 metadataFile: "metadata.json"
             },
             wallPushup: {
-                url: "https://teachablemachine.withgoogle.com/models/YOUR_WALLPUSHUP_MODEL/",
+                url: "https://teachablemachine.withgoogle.com/models/iAv1BylV5/",
                 modelFile: "model.json",
                 metadataFile: "metadata.json"
             },
@@ -108,7 +108,7 @@ const INSTRUCTIONS = {
         <div class="instructions-detailed">
             <h3>Wall Pushup Technique</h3>
             <div class="instruction-step">
-                <img src="Pushup/up.jpeg" alt="Starting position">
+                <img src="wallPushup/up.jpeg" alt="Starting position">
                 <div class="step-content">
                     <h4>Step 1: Starting Position</h4>
                     <ul>
@@ -119,7 +119,7 @@ const INSTRUCTIONS = {
                 </div>
             </div>
             <div class="instruction-step">
-                <img src="Pushup/down.jpeg" alt="Bend position">
+                <img src="wallPushup/down.jpeg" alt="Bend position">
                 <div class="step-content">
                     <h4>Step 2: The Movement</h4>
                     <ul>
@@ -158,7 +158,6 @@ const INSTRUCTIONS = {
         </div>
     `
 };
-// Update the selectExercise function
 function selectExercise(exercise) {
     selectedExercise = exercise;
     
@@ -172,9 +171,11 @@ function selectExercise(exercise) {
 
     if (MODELS[exercise]) {
         startBtn.disabled = false;
-        // Show instructions immediately
+        // Show instructions immediately after selecting exercise
         labelContainer.innerHTML = `
-            ${INSTRUCTIONS[exercise]}
+            <div class="instructions-detailed">
+                ${INSTRUCTIONS[selectedExercise]}
+            </div>
             <div class="start-instruction">
                 <p>Click "Start Pose Detection" when ready to begin</p>
             </div>
@@ -223,18 +224,21 @@ async function init() {
         canvas.width = size;
         canvas.height = size;
         ctx = canvas.getContext("2d");
-
+        const CAMERA_INSTRUCTIONS = {
+    squat: "Keep your knees just above the camera and hands resting above your chest",
+    wallPushup: "Position yourself sideways, hands aligned with shoulders, facing left on the camera.",
+    plank: "Position yourself sideways to the camera, ensuring your full body is visible, facing left on the camera. "
+};
         // Show reference image after camera loads
         labelContainer.innerHTML = `
-            <div class="camera-active-container">
-                <div class="reference-image">
-                    <img src="${selectedExercise}/reference.png" alt="${selectedExercise} reference form" />
-                    <h3>Keep your knees just above the camera and hands resting above your chest.</h3>
-                </div>
-                <div class="predictions-container"></div>
-            </div>
-        `;
-
+    <div class="camera-active-container">
+        <div class="reference-image">
+            <img src="${selectedExercise}/reference.png" alt="${selectedExercise} reference form" />
+            <h3>${CAMERA_INSTRUCTIONS[selectedExercise]}</h3>
+        </div> 
+        <div class="predictions-container"></div>
+    </div>
+`;
         // Start animation loop
         window.requestAnimationFrame(loop);
 
