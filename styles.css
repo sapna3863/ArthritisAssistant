@@ -1064,3 +1064,520 @@ footer p {
         letter-spacing: 2px;
     }
 }
+
+/* About Arthritis Foundation Section */
+.about-arthritis-org {
+    max-width: 1000px;
+    margin: 80px auto;
+    padding: 40px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.about-arthritis-org h2 {
+    font-size: 2.2rem;
+    color: #223a64;
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 700;
+}
+
+.about-arthritis-org > p {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.8;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.about-arthritis-org a {
+    color: #223a64;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.about-arthritis-org a:hover {
+    color: #3457a6;
+    text-decoration: underline;
+}
+
+.foundation-mission,
+.foundation-services {
+    background: #f8f9fa;
+    padding: 30px;
+    border-radius: 12px;
+    margin: 30px 0;
+    border-left: 4px solid #223a64;
+}
+
+.foundation-mission h3,
+.foundation-services h3 {
+    font-size: 1.5rem;
+    color: #223a64;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.foundation-mission p,
+.foundation-services p {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.7;
+    margin: 0;
+}
+
+.foundation-services ul {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0 0 0;
+}
+
+.foundation-services li {
+    font-size: 1.1rem;
+    color: #555;
+    padding: 8px 0;
+    position: relative;
+    padding-left: 30px;
+    line-height: 1.6;
+}
+
+.foundation-services li:before {
+    content: "✓";
+    color: #28a745;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+    top: 8px;
+    font-size: 1.2rem;
+}
+
+.foundation-link {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    background: #e3f2fd;
+    border-radius: 10px;
+    font-size: 1.1rem;
+}
+
+.foundation-link a {
+    font-weight: 600;
+    color: #1976d2;
+}
+
+.foundation-link a:hover {
+    color: #0d47a1;
+}
+
+/* Mobile responsive for about section */
+@media (max-width: 768px) {
+    .about-arthritis-org {
+        margin: 40px 20px;
+        padding: 25px;
+    }
+    
+    .about-arthritis-org h2 {
+        font-size: 1.8rem;
+    }
+    
+    .foundation-mission,
+    .foundation-services {
+        padding: 20px;
+    }
+}
+/* Logo Styles */
+.navbar {
+    background-color: #223a64;
+    padding: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar-brand img {
+    height: 40px;
+    width: auto;
+    border-radius: 4px;
+}
+
+.navbar-brand span {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 2rem;
+}
+
+/* Bio Section with Foundation Logo */
+.bio-section {
+    max-width: 800px;
+    margin: 80px auto;
+    padding: 40px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+.bio-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.bio-logo {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 15px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Foundation Section with Logo */
+.about-arthritis-org {
+    max-width: 1000px;
+    margin: 80px auto;
+    padding: 40px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.foundation-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.foundation-logo {
+    width: 300px;
+    height: 100px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    object-fit: cover;
+    
+}
+
+.foundation-header h2 {
+    font-size: 2.2rem;
+    color: #223a64;
+    margin: 0;
+    font-weight: 700;
+}
+
+/* Logo placeholder styles when no image is available */
+.logo-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #223a64, #3457a6);
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.bio-logo.logo-placeholder {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    font-size: 1rem;
+}
+
+.foundation-logo.logo-placeholder {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+}
+
+.navbar-brand .logo-placeholder {
+    height: 40px;
+    width: 40px;
+    font-size: 0.8rem;
+}
+
+/* Mobile responsive for logos */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+    }
+    
+    .navbar-brand {
+        order: -1;
+    }
+    
+    .bio-logo {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .foundation-logo {
+        width: 80px;
+        height: 80px;
+    }
+}
+/* Daily Life Application Cards */
+.positioning-card,
+.daily-life-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    margin: 15px 0;
+    border-left: 4px solid #223a64;
+}
+
+.positioning-card h3,
+.daily-life-card h3 {
+    color: #223a64;
+    font-size: 1.2rem;
+    margin: 0 0 10px 0;
+    font-weight: 600;
+}
+
+.positioning-card p {
+    color: #555;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.daily-life-card p {
+    color: #555;
+    font-size: 1rem;
+    margin: 0 0 15px 0;
+}
+
+.applications-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+}
+
+.applications-list li {
+    color: #666;
+    font-size: 0.95rem;
+    padding: 5px 0;
+    position: relative;
+    padding-left: 25px;
+}
+
+.applications-list li:before {
+    content: "•";
+    color: #28a745;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+    font-size: 1.2rem;
+}
+
+.benefits {
+    background: #e8f5e9;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #2e7d32;
+    line-height: 1.4;
+}
+
+.benefits strong {
+    color: #1b5e20;
+}
+
+/* Prediction items styling */
+.prediction-item {
+    padding: 8px 12px;
+    margin: 5px 0;
+    border-radius: 6px;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.prediction-item.good-form {
+    background: #e8f5e9;
+    color: #2e7d32;
+    border-left: 3px solid #4caf50;
+}
+
+.prediction-item.bad-form {
+    background: #ffebee;
+    color: #c62828;
+    border-left: 3px solid #f44336;
+}
+
+/* Reference image styling */
+.reference-image {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.reference-image img {
+    max-width: 100%;
+    width: 300px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.reference-image h4 {
+    color: #223a64;
+    font-size: 1.1rem;
+    margin: 15px 0 5px 0;
+    font-weight: 600;
+}
+
+/* Camera active container */
+.camera-active-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 100%;
+}
+
+/* Navbar brand image fix */
+.navbar-brand img {
+    height: 40px;
+    width: auto;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+/* Update predictions container */
+.predictions-container {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-left: 4px solid #223a64;
+}
+
+.predictions-container h3 {
+    color: #223a64;
+    font-size: 1.2rem;
+    margin: 0 0 15px 0;
+    font-weight: 600;
+}
+
+/* Instructions section improvements */
+.instructions-section {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+/* Start instruction styling */
+.start-instruction {
+    text-align: center;
+    padding: 15px;
+    margin: 20px 0;
+    background: #e3f2fd;
+    border-radius: 8px;
+    border-left: 4px solid #1976d2;
+}
+
+.start-instruction p {
+    color: #1976d2;
+    font-size: 16px;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* Instruction alert styling */
+.instruction-alert {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 20px 0;
+    color: #856404;
+}
+
+.instruction-alert p {
+    margin: 5px 0;
+}
+
+/* Footer styling */
+footer {
+    background: #223a64;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+}
+
+footer p {
+    margin: 0;
+    font-size: 1rem;
+}
+
+/* Mobile responsive updates for camera page */
+@media (max-width: 768px) {
+    .webcam-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 15px;
+    }
+
+    .positioning-card,
+    .daily-life-card {
+        padding: 15px;
+        margin: 10px 0;
+    }
+
+    .positioning-card h3,
+    .daily-life-card h3 {
+        font-size: 1.1rem;
+    }
+
+    .camera-section {
+        padding: 20px;
+    }
+
+    .instructions-section {
+        padding: 20px;
+        max-height: none;
+    }
+
+    .reference-image img {
+        width: 250px;
+    }
+
+    .exercise-buttons {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .exercise-btn {
+        font-size: 12px;
+        padding: 8px 16px;
+    }
+}

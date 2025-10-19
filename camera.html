@@ -8,11 +8,15 @@
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
 </head>
 <body>
-    <nav class="navbar">
+     <nav class="navbar">
+        <div class="navbar-brand">
+            <img src="Home/logo.png" alt="Arthritis Assistant Logo" class="navbar-brand img">
+            <span>Arthritis Assistant</span>
+        </div>
         <ul>
             <li><a href="home.html">Home</a></li>
-            <li><a href="camera.html" class="active">Camera</a></li>
-            <li><a href="exercises.html">Exercises</a></li>
+            <li><a href="camera.html">Camera</a></li>
+            <li><a href="exercises.html" class="active">Exercises</a></li>
         </ul>
     </nav>
 
@@ -224,21 +228,83 @@ async function init() {
         canvas.width = size;
         canvas.height = size;
         ctx = canvas.getContext("2d");
+        
+        // Define camera instructions and daily life applications
         const CAMERA_INSTRUCTIONS = {
-    squat: "Keep your knees just above the camera and hands resting above your chest",
-    Pushup: "Position yourself sideways, hands aligned with shoulders, facing left on the camera.",
-    plank: "Position yourself sideways to the camera, ensuring your full body is visible, facing left on the camera. "
-};
-        // Show reference image after camera loads
+            squat: {
+                positioning: "Keep your knees just above the camera and hands resting above your chest",
+                dailyLife: {
+                    title: "Daily Life Applications",
+                    description: "Squatting helps in activities such as:",
+                    applications: [
+                        "Picking objects off the floor",
+                        "Reaching the bottom cabinet",
+                        "Getting up from low chairs",
+                        "Gardening and yard work"
+                    ],
+                    benefits: "Builds strength in legs and hips, improves mobility for daily tasks"
+                }
+            },
+            Pushup: {
+                positioning: "Position yourself sideways, hands aligned with shoulders, facing left on the camera",
+                dailyLife: {
+                    title: "Daily Life Applications",
+                    description: "Wall push-ups help with activities such as:",
+                    applications: [
+                        "Pushing heavy doors open",
+                        "Getting up from the floor",
+                        "Lifting and carrying groceries",
+                        "Pushing yourself up from bed"
+                    ],
+                    benefits: "Strengthens chest, shoulders, and arms for everyday pushing motions"
+                }
+            },
+            plank: {
+                positioning: "Position yourself sideways to the camera, ensuring your full body is visible, facing left",
+                dailyLife: {
+                    title: "Daily Life Applications",
+                    description: "Plank exercises help with activities such as:",
+                    applications: [
+                        "Maintaining good posture while sitting",
+                        "Lifting heavy objects safely",
+                        "Reducing back pain during daily tasks",
+                        "Improving balance and stability"
+                    ],
+                    benefits: "Strengthens core muscles essential for all daily movements"
+                }
+            }
+        };
+
+        // Show camera interface with daily life applications
         labelContainer.innerHTML = `
-    <div class="camera-active-container">
-        <div class="reference-image">
-            <img src="${selectedExercise}/reference.png" alt="${selectedExercise} reference form" />
-            <h3>${CAMERA_INSTRUCTIONS[selectedExercise]}</h3>
-        </div> 
-        <div class="predictions-container"></div>
-    </div>
-`;
+            <div class="camera-active-container">
+                <div class="predictions-container">
+                    <h3>Form Analysis</h3>
+                </div>
+                
+                <div class="positioning-card">
+                    <h3>Camera Positioning</h3>
+                    <p>${CAMERA_INSTRUCTIONS[selectedExercise].positioning}</p>
+                </div>
+                
+                <div class="daily-life-card">
+                    <h3>${CAMERA_INSTRUCTIONS[selectedExercise].dailyLife.title}</h3>
+                    <p>${CAMERA_INSTRUCTIONS[selectedExercise].dailyLife.description}</p>
+                    <ul class="applications-list">
+                        ${CAMERA_INSTRUCTIONS[selectedExercise].dailyLife.applications.map(app => `<li>${app}</li>`).join('')}
+                    </ul>
+                    <div class="benefits">
+                        <strong>Benefits:</strong> ${CAMERA_INSTRUCTIONS[selectedExercise].dailyLife.benefits}
+                    </div>
+                </div>
+                
+                <div class="reference-image">
+                    <img src="${selectedExercise}/reference.png" alt="${selectedExercise} reference form" />
+                    <h4>Reference Form</h4>
+                </div>
+            </div>
+        `;
+        
         // Start animation loop
         window.requestAnimationFrame(loop);
 
@@ -253,12 +319,11 @@ async function init() {
         `;
     }
 }
-
-    async function loop() {
-        if (webcam && webcam.canvas) {
-            webcam.update();
-            await predict();
-            window.requestAnimationFrame(loop);
+async function loop() {
+    if (webcam && webcam.canvas) {
+        webcam.update();
+        await predict();
+        window.requestAnimationFrame(loop);
         }
     }
 
