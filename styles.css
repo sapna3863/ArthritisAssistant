@@ -239,7 +239,7 @@ body {
 
 .instructions-section {
     background: white;
-    padding: 30px;
+    padding: 50px;
     border-radius: 12px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.08);
 }
@@ -1580,4 +1580,5 @@ footer p {
         font-size: 12px;
         padding: 8px 16px;
     }
+
 }
