@@ -26,9 +26,9 @@
             <h2>Start exercising using pose recognition!</h2>
 
             <div class="exercise-buttons">
-                <button onclick="selectExercise('squat')" class="exercise-btn">Squat</button>
+                <button onclick="selectExercise('Squat')" class="exercise-btn">Squat</button>
                 <button onclick="selectExercise('Pushup')" class="exercise-btn">Wall Pushup</button>
-                <button onclick="selectExercise('plank')" class="exercise-btn">Plank</button>
+                <button onclick="selectExercise('Plank')" class="exercise-btn">Plank</button>
             </div>
 
             <button onclick="init()" id="startBtn" disabled>Start Pose Detection</button>
@@ -43,7 +43,7 @@
     <script>
         // Model definitions
         const MODELS = {
-            squat: {
+            Squat: {
                 url: "https://teachablemachine.withgoogle.com/models/T-gobA29l/",
                 modelFile: "model.json",
                 metadataFile: "metadata.json"
@@ -53,7 +53,7 @@
                 modelFile: "model.json",
                 metadataFile: "metadata.json"
             },
-            plank: {
+            Plank: {
                 url: "https://teachablemachine.withgoogle.com/models/TMs9nDSuv/",
                 modelFile: "model.json",
                 metadataFile: "metadata.json"
@@ -65,7 +65,7 @@
         let selectedExercise = '';
 
 const INSTRUCTIONS = {
-    squat: `
+    Squat: `
         <div class="instructions-detailed">
             <h3>Proper Squat Form</h3>
             <div class="instruction-step">
@@ -139,7 +139,7 @@ const INSTRUCTIONS = {
             </div>
         </div>
     `,
-    plank: `
+    Plank: `
         <div class="instructions-detailed">
             <h3>Plank Position</h3>
             <div class="instruction-step">
@@ -231,7 +231,7 @@ async function init() {
         
         // Define camera instructions and daily life applications
         const CAMERA_INSTRUCTIONS = {
-            squat: {
+            Squat: {
                 positioning: "Keep your knees just above the camera and hands resting above your chest",
                 dailyLife: {
                     title: "Daily Life Applications",
@@ -259,7 +259,7 @@ async function init() {
                     benefits: "Strengthens chest, shoulders, and arms for everyday pushing motions"
                 }
             },
-            plank: {
+            Plank: {
                 positioning: "Position yourself sideways to the camera, ensuring your full body is visible, facing left",
                 dailyLife: {
                     title: "Daily Life Applications",
@@ -375,3 +375,4 @@ async function loop() {
 </body>
 
 </html>
+
